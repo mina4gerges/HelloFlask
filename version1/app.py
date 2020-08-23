@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 
-from Quote import Quote
+from version1.Quote import Quote
 
 app = Flask(__name__)
 api = Api(app)

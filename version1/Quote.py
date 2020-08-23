@@ -1,7 +1,8 @@
 # flask_restful, an extension for Flask which enables rapid development of REST
 from flask_restful import Resource, reqparse
 import random
-from data.dummyData import ai_quotes
+
+from version1.dummyData import ai_quotes
 
 
 class Quote(Resource):
@@ -51,7 +52,8 @@ class Quote(Resource):
         ai_quotes.append(quote)
         return quote, 201
 
+
 def delete(self, id):
-    global ai_quotes
+    # global ai_quotes
     ai_quotes = [quote for quote in ai_quotes if quote["id"] != id]
     return f"Quote with id {id} is deleted.", 200
