@@ -1,2 +1,2 @@
-# Hello Flusk
-exemple how to use API request using flusk (python)
+# Hello Flask
+exemple how to use API request using flask (python)
