@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import mysql.connector
 from mysql.connector import Error
 from version2.dataBase import host, user, dbname, password
@@ -9,6 +9,14 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return "Hello"
+
+
+def get_final_data(obj):
+    final_array = []
+    for x in obj:
+        each_screen_obj = {'id': x[0], 'title': x[1], 'body': x[2], 'image': x[3]}
+        final_array.append(each_screen_obj)
+    return final_array
 
 
 @app.route('/data', methods=['POST', 'GET'])
@@ -43,7 +51,7 @@ def data():
                 cursor.execute(query)
                 rows = cursor.fetchall()
                 conn.commit()
-                return str(rows)
+                return jsonify(get_final_data(rows))
 
     except Error as e:
         return 'error occurred', e
