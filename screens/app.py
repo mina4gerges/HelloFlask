@@ -1,25 +1,20 @@
 from flask import Flask, request, jsonify
 import mysql.connector
 from mysql.connector import Error
-from version2.dataBase import host, user, dbname, password
+from screens.dataBase import host, user, dbname, password
 
 app = Flask(__name__)
-
-
-@app.route('/')
-def index():
-    return "Hello"
 
 
 def get_final_data(obj):
     final_array = []
     for x in obj:
-        each_screen_obj = {'id': x[0], 'title': x[1], 'body': x[2], 'image': x[3]}
+        each_screen_obj = {'id': x[0], 'title': x[1], 'body': x[2], 'image': x[3], 'imagePath': x[4]}
         final_array.append(each_screen_obj)
     return final_array
 
 
-@app.route('/data', methods=['POST', 'GET'])
+@app.route('/screens', methods=['POST', 'GET'])
 def data():
     global conn, cursor
 
@@ -37,10 +32,11 @@ def data():
                 title = params.get('intro_title')
                 desc = params.get('intro_desc')
                 image = params.get('intro_image')
+                image_path = params.get('intro_image_path')
 
-                query = "INSERT INTO screens (intro_title, intro_desc, intro_image) VALUES (%s, %s, %s);"
+                query = "INSERT INTO screens (intro_title, intro_desc, intro_image,image_path) VALUES (%s, %s, %s,%s);"
 
-                cursor.execute(query, (title, desc, image))
+                cursor.execute(query, (title, desc, image, image_path))
                 conn.commit()
 
                 return "Inserted 1 row"
@@ -62,7 +58,7 @@ def data():
             print("MySQL connection is closed")
 
 
-@app.route('/data/<string:id>', methods=['GET', 'DELETE', 'PUT'])
+@app.route('/screen/<string:id>', methods=['GET', 'DELETE', 'PUT'])
 def onedata(id):
     global conn, cursor
 
@@ -94,10 +90,11 @@ def onedata(id):
                 title = params.get('intro_title')
                 desc = params.get('intro_desc')
                 image = params.get('intro_image')
+                image_path = params.get('intro_image_path')
 
-                query = "UPDATE screens SET intro_title = %s,intro_desc =%s,intro_image=%s WHERE intro_id = %s;"
+                query = "UPDATE screens SET intro_title = %s,intro_desc =%s,intro_image=%s,image_path=%s WHERE intro_id = %s;"
 
-                cursor.execute(query, (title, desc, image, id))
+                cursor.execute(query, (title, desc, image, id, image_path))
                 conn.commit()
                 return "updated"
 
